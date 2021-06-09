@@ -1,6 +1,7 @@
 import { useStoreApi } from "./storeApi";
 import useWeb3 from "./useWeb3";
 import { Button, TextField } from "@material-ui/core";
+import React, { useEffect } from 'react';
 
 import "./App.css";
 import Metalogo from "./asset/metamask-fox.svg";
@@ -9,6 +10,17 @@ function App() {
   const { balance, address, setAddress, setBalance } = useStoreApi();
   const web3 = useWeb3();
 
+
+  useEffect(() => {
+    window.ethereum.on('accountsChanged', handleAccountsChanged);
+    return () => {
+      window.ethereum.removeAllListeners('accountsChanged');
+    }
+  },)
+
+  const handleAccountsChanged = (accounts) => {
+      getUserAccount();
+    }
 
   // get user account on button click
   const getUserAccount = async () => {
